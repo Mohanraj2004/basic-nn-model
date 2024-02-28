@@ -1,4 +1,4 @@
-# Developing a Neural Network Regression Model
+#EX:1 Developing a Neural Network Regression Model
 
 ## AIM
 
@@ -43,6 +43,8 @@ Plot the performance plot
 Evaluate the model with the testing data.
 
 ## PROGRAM
+## Developed by: MOHANRAJ S
+## Register no:212221230065S
 ```
 from google.colab import auth
 import gspread
