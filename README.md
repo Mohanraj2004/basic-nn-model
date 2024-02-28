@@ -6,11 +6,11 @@ To develop a neural network regression model for the given dataset.
 
 ## THEORY
 
-Explain the problem statement
+Training the algorithm to predict the price of house with square feet values.
 
 ## Neural Network Model
 
-Include the neural network model diagram.
+![Output1](Diagram.png)
 
 ## DESIGN STEPS
 
@@ -43,25 +43,96 @@ Plot the performance plot
 Evaluate the model with the testing data.
 
 ## PROGRAM
+```
+from google.colab import auth
+import gspread
+from google.auth import default
+import pandas as pd
 
-Include your code here
+auth.authenticate_user()
+creds, _ = default()
+gc = gspread.authorize(creds)
+
+worksheet = gc.open('PricePrediction').sheet1
+rows = worksheet.get_all_values()
+df1 = pd.DataFrame(rows[1:], columns=rows[0])
+
+df=df1.drop(["lakhs","Price"],axis=1)
+df.head()
+
+df.dtypes
+
+df=df.astype({'Sq.feet':'float'})
+df=df.astype({'Price.(in Lakhs)':'float'})
+
+x=df[['Sq.feet']].values
+y=df[['Price.(in Lakhs)']].values
+x
+y
+
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.33,random_state=50)
+
+scaler=MinMaxScaler()
+scaler.fit(x_train)
+x_train_scaled = scaler.transform(x_train)
+x_train_scaled
+
+ai_brain = Sequential([
+    Dense(12,activation='relu'),
+    Dense(6,activation='relu'),
+    Dense(3,activation='relu'),
+    Dense(1)
+])
+ai_brain.compile(optimizer='rmsprop',loss='mse')
+
+ai_brain.fit(x=x_train_scaled,y=y_train,epochs=5000) 
+
+loss_df=pd.DataFrame(ai_brain.history.history)
+loss_df.plot()
+import matplotlib.pyplot as plt
+plt.title("Iteration vs Loss")
+
+x_test
+
+x_test_scaled=scaler.transform(x_test)
+x_test_scaled
+
+ai_brain.evaluate(x_test,y_test)
+
+input=[[2000]]
+input_scaled=scaler.transform(input)
+input_scaled.shape
+
+input_scaled
+
+ai_brain.predict(input_scaled)
+```
+
 
 ## Dataset Information
 
-Include screenshot of the dataset
+![Output1](data.png)
 
 ## OUTPUT
 
 ### Training Loss Vs Iteration Plot
 
-Include your plot here
+![Output1](Iterationvsloss.png)
 
 ### Test Data Root Mean Squared Error
 
-Find the test data root mean squared error
+![Output1](eval.png)
 
 ### New Sample Data Prediction
 
-Include your sample input and output here
+![Output1](pre.png)
 
 ## RESULT
+
+Thus the price of the house is predicted.
