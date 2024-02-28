@@ -1,4 +1,4 @@
-#EX:1 Developing a Neural Network Regression Model
+## EX:1 Developing a Neural Network Regression Model
 
 ## AIM
 
